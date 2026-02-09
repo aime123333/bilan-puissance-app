@@ -1,0 +1,41 @@
+-- Table des catégories d'équipements
+CREATE TABLE categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nom TEXT NOT NULL,
+    description TEXT,
+    unite TEXT DEFAULT 'kW'
+);
+
+-- Table des types d'équipements standards
+CREATE TABLE types_equipements (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    categorie_id INTEGER,
+    nom TEXT NOT NULL,
+    puissance_moyenne REAL,
+    puissance_min REAL,
+    puissance_max REAL,
+    facteur_charge REAL DEFAULT 70,
+    heures_fonction REAL DEFAULT 10,
+    FOREIGN KEY (categorie_id) REFERENCES categories(id)
+);
+
+-- Table des modèles spécifiques
+CREATE TABLE modeles_equipements (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    type_id INTEGER,
+    marque TEXT,
+    modele TEXT,
+    puissance_nominale REAL,
+    annee INTEGER,
+    classe_energetique TEXT,
+    FOREIGN KEY (type_id) REFERENCES types_equipements(id)
+);
+
+-- Table des coefficients saisonniers
+CREATE TABLE coefficients_saison (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    mois INTEGER,
+    categorie_id INTEGER,
+    coefficient REAL DEFAULT 1.0,
+    FOREIGN KEY (categorie_id) REFERENCES categories(id)
+);
